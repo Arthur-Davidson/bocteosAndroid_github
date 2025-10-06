@@ -10,63 +10,79 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import mx.uacj.navigationcompose.ui.pantallas.PantallaInicio
 import mx.uacj.navigationcompose.ui.pantallas.PantallaVideo
 
+// Constantes de rutas
+const val INICIO = "Inicio"
+const val VIDEO = "Video"
+const val CONFIGURACION = "Configuracion"
+const val CANAL = "Canal"
+
 @Composable
-fun NavegacionInicio(modificador: Modifier = Modifier){
-    val controladorNavegacion = rememberNavController()
+fun NavegacionInicio(
+    modificador: Modifier = Modifier,
+    controladorDeNavegacion: NavHostController
+) {
+    NavHost(
+        navController = controladorDeNavegacion,
+        startDestination = INICIO
+    ) {
+        composable(INICIO) {
+            PantallaInicio(modificador, controladorDeNavegacion)
+        }
 
-    NavHost(navController = controladorNavegacion, startDestination = Inicio){
-        composable <Inicio> {
-            Column (modifier = modificador
-                .fillMaxSize()
-                .background(color = Color.Red)){
+        composable(VIDEO) {
+            PantallaVideo(modificador, controladorDeNavegacion)
+        }
 
-                Text("En pantalla de inicio")
-                Text("Ir a Video",
-                    modifier = modificador
+        composable(CONFIGURACION) {
+            Column(
+                modifier = modificador
+                    .fillMaxSize()
+                    .background(color = Color.Cyan)
+            ) {
+                Text("En pantalla de configuración")
+
+                Text(
+                    "Ir a Video",
+                    modifier = Modifier
                         .padding(15.dp)
-                        .clickable { controladorNavegacion.navigate(Video) })
+                        .clickable {
+                            controladorDeNavegacion.navigate(VIDEO)
+                        }
+                )
 
-                Text("Ir a Configuracion",
-                    modifier = modificador
+                Text(
+                    "Ir a Inicio",
+                    modifier = Modifier
                         .padding(15.dp)
-                        .clickable { controladorNavegacion.navigate(Configuracion) })
+                        .clickable {
+                            controladorDeNavegacion.popBackStack()
+                        }
+                )
 
-                Text("Ir a Canal",
-                    modifier = modificador
+                Text(
+                    "Ir a Canal",
+                    modifier = Modifier
                         .padding(15.dp)
-                        .clickable { controladorNavegacion.navigate(Canal) })
+                        .clickable {
+                            controladorDeNavegacion.navigate(CANAL)
+                        }
+                )
             }
         }
 
-        composable <Video> {
-            PantallaVideo(modificador, controladorNavegacion)
-        }
-
-        composable <Configuracion> {
-            Text("En pantalla de configuracion", modifier = modificador
-                .fillMaxSize()
-                .background(color = Color.Green)
-            )
-            Text("Ir al inicio",
+        composable(CANAL) {
+            Text(
+                "En pantalla de canal",
                 modifier = modificador
-                    .padding(15.dp)
-                    .clickable { controladorNavegacion.navigate(Inicio) })
-        }
-
-        composable <Canal> {
-            Text("En pantalla de canal", modifier = modificador
-                .fillMaxSize()
-                .background(color = Color.Yellow)
+                    .fillMaxSize()
+                    .background(color = Color.Green)
             )
-            Text("Ir al inicio",
-                modifier = modificador
-                    .padding(15.dp)
-                    .clickable { controladorNavegacion.navigate(Inicio) })
         }
     }
 }
