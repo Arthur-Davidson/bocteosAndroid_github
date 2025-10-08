@@ -53,8 +53,11 @@ dependencies {
     ksp(libs.hilt.android.compilador)
 
     val androidxhiltCompiler = "1.2.0" // Cambiamos a 1.2.0
-    implementation("androidx.hilt:hilt-work: ${androidxhiltCompiler}")
-    ksp("android.hilt:hilt-compiler: ${androidxhiltCompiler}")
+    implementation("androidx.hilt:hilt-work:${androidxhiltCompiler}")
+    ksp("androidx.hilt:hilt-compiler:${androidxhiltCompiler}")
+
+    // Dependencia para Hilt y evitar errores extraños
+    implementation("androidx.work:work-runtime-ktx:2.7.0")
 
     // Para instalar Retrofit
     implementation(libs.okhttp)
