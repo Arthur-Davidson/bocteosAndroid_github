@@ -7,7 +7,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import mx.uacj.hiltandretrofit.ui.pantallas.ListaPublicaciones
-import mx.uacj.hiltandretrofit.controladores.pantallaPublicacion
+import mx.uacj.hiltandretrofit.ui.pantallas.PantallaPublicacion
+
 
 @Composable
 fun NavegacionPrincipal(modificador: Modifier = Modifier){

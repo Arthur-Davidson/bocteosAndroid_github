@@ -32,7 +32,8 @@ fun ListaPublicaciones(
         Column (modifier = Modifier.verticalScroll(rememberScrollState())) {
             for (publicacion in ControlPublicaciones.publicaciones.value){
                 Column (modifier = Modifier.clickable {
-                    ControlPublicaciones.seleccionarPublicacion()
+                    ControlPublicaciones.seleccionarPublicacion(id = publicacion.id)
+                    navegarAPublicacion()
                 }) {
                     Text("Publicacion: ${publicacion.title}")
                     Text("${publicacion.body}")
