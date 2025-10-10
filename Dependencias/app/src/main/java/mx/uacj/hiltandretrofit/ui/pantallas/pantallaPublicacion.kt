@@ -18,7 +18,7 @@ fun PantallaPublicacion(
     controladorPublicaciones.seleccionarPublicacion(1)
 
     val publicacion = controladorPublicaciones.publicacionSeleccionada.value
-    val comentarios = controladorPublicaciones.comentarios
+    val comentarios by controladorPublicaciones.comentarios
 
     Log.v("PantallaPublicacion", "Valor del controlador: ${controladorPublicaciones}")
 
