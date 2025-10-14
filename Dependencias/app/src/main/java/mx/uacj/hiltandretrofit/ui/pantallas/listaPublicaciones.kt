@@ -64,7 +64,7 @@ fun ListaPublicaciones(
                             .fillMaxWidth()
                             .padding(16.dp) // margen externo entre tarjetas
                             .background(
-                                color = Color.LightGray, // gris más claro (se ve más limpio que el gris oscuro)
+                                color = Color.LightGray, // gris mas claro
                                 shape = RoundedCornerShape(12.dp)
                             )
                             .padding(12.dp) // padding interno de la tarjeta

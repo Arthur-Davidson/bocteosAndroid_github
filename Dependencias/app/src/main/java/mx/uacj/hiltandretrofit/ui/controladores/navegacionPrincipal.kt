@@ -12,6 +12,7 @@ import mx.uacj.hiltandretrofit.ui.pantallas.PantallaPublicacion
 
 @Composable
 fun NavegacionPrincipal(modificador: Modifier = Modifier){
+
     val controlNavegacion = rememberNavController()
 
     NavHost(navController = controlNavegacion, startDestination = PantallaListaPublicaciones) {
