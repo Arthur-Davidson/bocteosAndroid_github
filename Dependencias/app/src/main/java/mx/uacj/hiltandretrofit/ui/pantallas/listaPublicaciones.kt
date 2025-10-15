@@ -19,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import mx.uacj.hiltandretrofit.controlador.ControladorPublicaciones
@@ -36,6 +37,8 @@ fun ListaPublicaciones(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(
+                color = Color(0xFFFFF8EB.toLong())) // fondo color piel
     ){
         Text(
             text = "Tenemos la cantidad de ${ControlPublicaciones.publicaciones.value.size} publicaciones",
@@ -43,7 +46,7 @@ fun ListaPublicaciones(
             fontWeight = FontWeight.Bold,
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.Black) // fondo negro
+                .background(color = Color(0xFF021F0A.toLong())) // fondo verde oscuro
                 .padding(10.dp) // espacio interno
         )
     }
@@ -64,15 +67,16 @@ fun ListaPublicaciones(
                             .fillMaxWidth()
                             .padding(16.dp) // margen externo entre tarjetas
                             .background(
-                                color = Color.LightGray, // gris mas claro
+                                color = Color(0xFFA8FFBF.toLong()), // Verde claro
                                 shape = RoundedCornerShape(12.dp)
                             )
                             .padding(12.dp) // padding interno de la tarjeta
                     ) {
                         Text(
                             text = "Publicación: ${publicacion.title}",
-                            color = Color.Blue,
+                            color = Color(0xFF021F0A.toLong()),
                             fontWeight = FontWeight.Bold,
+                            fontSize = 22.sp,
                             modifier = Modifier.padding(bottom = 4.dp)
                         )
                         Text(
