@@ -1,8 +1,6 @@
 package mx.uacj.pokeapi.modelos
 
-// -------------------
 // Habilidades
-// -------------------
 data class HabilidadURL(
     val name: String,
     val url: String
@@ -14,17 +12,13 @@ data class Habilidad(
     val ability: HabilidadURL
 )
 
-// -------------------
 // Aullido (cries)
-// -------------------
 data class Aullido(
     val latest: String?,
     val legacy: String?
 )
 
-// -------------------
 // Sprites (imágenes)
-// -------------------
 data class Sprite(
     val back_default: String?,
     val back_female: String?,
@@ -36,66 +30,19 @@ data class Sprite(
     val front_shiny_female: String?
 )
 
-// -------------------
-// Stats (atributos base como speed, attack...)
-// -------------------
-data class StatURL(
-    val name: String,
-    val url: String
-)
-
-data class Stat(
+data class EstadisticaBase(
     val base_stat: Int,
     val effort: Int,
-    val stat: StatURL
+    val stat: Estadistica
 )
 
-// -------------------
-// Tipos (fairy, fire, water...)
-// -------------------
-data class TipoURL(
+data class Estadistica(
     val name: String,
-    val url: String
+    val url: String //"https://pokeapi.co/api/v2/stat/6/"
 )
 
-data class Tipo(
-    val slot: Int,
-    val type: TipoURL
-)
-
-// -------------------
-// Generaciones pasadas (past_types, past_abilities)
-// -------------------
-data class GenerationURL(
-    val name: String,
-    val url: String
-)
-
-data class PastType(
-    val slot: Int,
-    val type: TipoURL
-)
-
-data class PastTypeEntry(
-    val generation: GenerationURL,
-    val types: List<PastType>
-)
-
-data class PastAbility(
-    val ability: HabilidadURL?,
-    val is_hidden: Boolean,
-    val slot: Int
-)
-
-data class PastAbilityEntry(
-    val generation: GenerationURL,
-    val abilities: List<PastAbility>
-)
-
-// -------------------
 // Pokémon principal
-// -------------------
-data class Pokemon(
+data class pokemon(
     val id: Int,
     val name: String,
     val base_experience: Int,
@@ -107,8 +54,5 @@ data class Pokemon(
     val abilities: List<Habilidad>,
     val sprites: Sprite,
     val cries: Aullido,
-    val stats: List<Stat>,
-    val types: List<Tipo>,
-    val past_types: List<PastTypeEntry>,
-    val past_abilities: List<PastAbilityEntry>
+    val stats: List<EstadisticaBase>,
 )
