@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,27 +20,31 @@ class pokemonesViewModel @Inject constructor(
     private val repositorio: repositorioPokemones,
     private val conexionServer: interfazPokemonAPI
 ): ViewModel() {
-    private var estado = mutableStateOf("Cargando")
+    private var estado = mutableStateOf("Cargando...")
+
     public val pokemones: State<List<pokemon>> = repositorio.pokemones
 
     init {
-        for (indicePokemon in 0 .. 100) {
+        for (indicePokemon in 1 .. 100) {
             descargarPokemon(indicePokemon)
         }
 
     }
 
-    fun descargarPokemon(id: Int): pokemon {
-        val pokemon: pokemon
+    fun descargarPokemon(id: Int){
+        var pokemon: pokemon? = null
+
         viewModelScope.launch {
             pokemon = conexionServer.descargarPokemon(id)
-            //
-
-
-
-            val primerPokemon = conexionServer.descargarPokemon(id)
             //pokemonCache = mutableStateOf(pokemonDescargado)
+            val lista = repositorio.pokemones.value.toMutableStateList()
+
+            if (pokemon != null){
+                lista.add(pokemon!!)
+            }
+
+            repositorio.pokemones.value = lista
         }
-        return pokemon
+        //return pokemon
     }
 }

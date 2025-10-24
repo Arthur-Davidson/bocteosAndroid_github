@@ -6,7 +6,6 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface interfazPokemonAPI{
-    //@POST("/pokemon")
 
     @GET("/pokemon/{id}")
     suspend fun descargarPokemon(@Path("id") id: Int): pokemon
