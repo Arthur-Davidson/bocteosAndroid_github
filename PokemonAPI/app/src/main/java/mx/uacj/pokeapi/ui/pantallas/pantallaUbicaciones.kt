@@ -14,8 +14,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import mx.uacj.pokeapi.modelos.pokemon
 
+// POR TERMINAR
+
 @Composable
-fun PantallaPokemon(modificador: Modifier = Modifier, pokemon: pokemon) {
+fun PantallaUbicaciones(modificador: Modifier = Modifier, pokemon: pokemon) {
     // Fondo
     Column(
         modifier = modificador
@@ -122,6 +124,6 @@ fun PantallaPokemon(modificador: Modifier = Modifier, pokemon: pokemon) {
 
 @Preview
 @Composable
-fun previewPantallaPokemon(){
-    //PantallaPokemon()
+fun previewPantallaUbicaciones(){
+    //
 }
