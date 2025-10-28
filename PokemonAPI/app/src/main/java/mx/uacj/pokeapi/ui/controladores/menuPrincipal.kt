@@ -23,25 +23,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import mx.uacj.pokeapi.ui.pantallas.pantallaPrincipal
+import mx.uacj.pokeapi.ui.pantallas.pantallaMaquinas
+import mx.uacj.pokeapi.ui.pantallas.pantallaUbicaciones
 
 // Modelo de datos para las opciones del menú inferior
 data class OpcionesMenu(
     val titulo: String,
-    val icono: String,
     val ruta: String
 )
 
-// Composable que dibuja la barra inferior con las opciones
 @Composable
 fun OpcionesMenuInferior(
     opciones: List<OpcionesMenu>,
     rutaActual: String,
     alPresionar: (String) -> Unit
 ) {
-    // 🎨 Barra principal roja clara
     BottomAppBar(
-        containerColor = Color(0xFF0D47A1), // rojo claro
+        containerColor = Color(0xFF0D47A1), // azul oscuro
         contentColor = Color.White,
         tonalElevation = 8.dp
     ) {
@@ -53,8 +56,6 @@ fun OpcionesMenuInferior(
                 .padding(vertical = 6.dp)
         ) {
             for (opcion in opciones) {
-
-                // Cada opción está dentro de un recuadro amarillo claro
                 Card(
                     shape = RoundedCornerShape(12.dp),
                     colors = CardDefaults.cardColors(
@@ -68,7 +69,7 @@ fun OpcionesMenuInferior(
                 ) {
                     Text(
                         text = opcion.titulo,
-                        color = Color(0xFF0D47A1), // azul oscuro
+                        color = Color(0xFF0D47A1),
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
                     )
@@ -78,31 +79,50 @@ fun OpcionesMenuInferior(
     }
 }
 
-
-// Composable principal con Scaffold
 @Composable
-fun MenuPrincipal() {
+fun MenuPrincipal(navController: NavHostController) {
 
     val listaOpcionesMenu by remember {
         mutableStateOf(
             mutableStateListOf(
-                OpcionesMenu("Pokemones", "icono", "PantallaPokemones"),
-                OpcionesMenu("Ubicaciones", "icono", "PantallaUbicaciones"),
-                OpcionesMenu("Máquinas", "icono", "PantallaMaquinas"),
+                OpcionesMenu("Pokemones", "pantallaPrincipal"),
+                OpcionesMenu("Ubicaciones", "pantallaUbicaciones"),
+                OpcionesMenu("Máquinas", "pantallaMaquinas"),
             )
         )
     }
+
+    // Estado de la ruta actual (para resaltar el botón activo)
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val rutaActual = navBackStackEntry?.destination?.route ?: "pantallaPrincipal"
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
             OpcionesMenuInferior(
                 opciones = listaOpcionesMenu,
-                rutaActual = "TODO()", // placeholder
-                alPresionar = { /* acción al presionar */ }
+                rutaActual = rutaActual,
+                alPresionar = { ruta ->
+                    if (rutaActual != ruta) {
+                        navController.navigate(ruta) {
+                            popUpTo("pantallaPrincipal") { inclusive = false }
+                            launchSingleTop = true
+                        }
+                    }
+                }
             )
         }
     ) { innerPadding ->
-        pantallaPrincipal(modificador = Modifier.padding(innerPadding))
+
+        // Controlador de pantallas según la ruta
+        NavHost(
+            navController = navController,
+            startDestination = "pantallaPrincipal",
+            modifier = Modifier.padding(innerPadding)
+        ) {
+            composable("pantallaPrincipal") { pantallaPrincipal() }
+            composable("pantallaUbicaciones") { pantallaUbicaciones() }
+            composable("pantallaMaquinas") { pantallaMaquinas() }
+        }
     }
 }
