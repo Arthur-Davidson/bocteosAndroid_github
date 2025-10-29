@@ -123,6 +123,7 @@ fun MenuPrincipal(navController: NavHostController) {
             composable("pantallaPrincipal") { pantallaPrincipal() }
             composable("pantallaUbicaciones") { pantallaUbicaciones() }
             composable("pantallaMaquinas") { pantallaMaquinas() }
+
         }
     }
 }
