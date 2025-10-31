@@ -11,18 +11,37 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object conexionPokemonApi {
+
+    private const val BASE_URL = "https://pokeapi.co/api/v2/"
+
+    // Crea una única instancia de Retrofit que se comparte
     @Provides
     @Singleton
-    fun conexionServer(): Retrofit.Builder {
+    fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://pokeapi.co/api/v2/")
-            .addConverterFactory((GsonConverterFactory.create()))
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
     }
 
+    // Interfaz para Pokemones
     @Provides
     @Singleton
-    fun enlaceConServidor(server: Retrofit.Builder): interfazPokemonAPI{
-        return server.build()
-            .create(interfazPokemonAPI::class.java)
+    fun providePokemonApi(retrofit: Retrofit): interfazPokemonAPI {
+        return retrofit.create(interfazPokemonAPI::class.java)
+    }
+
+    // Interfaz para Máquinas
+    @Provides
+    @Singleton
+    fun provideMaquinasApi(retrofit: Retrofit): interfazMaquinasAPI {
+        return retrofit.create(interfazMaquinasAPI::class.java)
+    }
+
+    // Interfaz para Ubicaciones
+    @Provides
+    @Singleton
+    fun provideUbicacionesApi(retrofit: Retrofit): interfazUbicacionesAPI {
+        return retrofit.create(interfazUbicacionesAPI::class.java)
     }
 }

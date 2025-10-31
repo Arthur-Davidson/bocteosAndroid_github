@@ -8,14 +8,14 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import mx.uacj.pokeapi.modelos.Maquina
-import mx.uacj.pokeapi.repositorioAPI.apiConexion.interfazPokemonAPI
+import mx.uacj.pokeapi.repositorioAPI.apiConexion.interfazMaquinasAPI
 import mx.uacj.pokeapi.repositorioAPI.repositorioMaquinas
 import javax.inject.Inject
 
 @HiltViewModel
 class MaquinasViewModel @Inject constructor(
     private val repositorio: repositorioMaquinas,
-    private val conexionServer: interfazPokemonAPI
+    private val conexionServer: interfazMaquinasAPI
 ): ViewModel() {
 
     val maquinas: State<List<Maquina>> = repositorio.maquinas
