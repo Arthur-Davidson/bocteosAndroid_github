@@ -51,6 +51,31 @@ fun PantallaPublicacion(
             )
 
             // --- Cuerpo ---
+
+            /*
+            * Column (modifier = Modifier
+                    .clickable {
+                    ControlPublicaciones.seleccionarPublicacion(id = publicacion.id)
+                    navegarAPublicacion()
+                }
+            * */
+            Column(// El clickable para el perfil
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 6.dp)
+                    .background(
+                        color = Color(0xFFA8FFBF.toLong()),
+                        shape = RoundedCornerShape(10.dp)
+                    )
+                    .padding(12.dp) // padding interno de cada comentario
+            ) {
+                Text(
+                    text = user,
+                    fontSize = 14.sp,
+                    color = Color.DarkGray
+                )
+            }
+
             Text(
                 text = publicacion.body,
                 fontSize = 16.sp,
