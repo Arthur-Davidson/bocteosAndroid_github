@@ -9,95 +9,94 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.navigation.compose.rememberNavController
 import mx.uacj.hiltandretrofit.controlador.ControladorPublicaciones
+import mx.uacj.hiltandretrofit.modelos.Publicacion
 
 @Composable
 fun ListaPublicaciones(
-    modifier: Modifier = Modifier,
-    ControlPublicaciones: ControladorPublicaciones = hiltViewModel(),
-    navegarAPublicacion: () -> Unit = {}
+    modificador: Modifier = Modifier,
+    navegarAPublicacion: (Publicacion) -> Unit // acepta una publicación como argumento
 ) {
-    val controladorNavegacion = rememberNavController() // Para juntar el Nav Compose
+    val controlador = hiltViewModel<ControladorPublicaciones>()
+    val publicaciones = controlador.publicaciones.value
 
-    ControlPublicaciones.obtenerPublicaciones()
+    // Cargar publicaciones al entrar por primera vez
+    LaunchedEffect(Unit) {
+        controlador.obtenerPublicaciones()
+    }
 
     Column(
-        modifier = Modifier
+        modifier = modificador
             .fillMaxSize()
-            .background(
-                color = Color(0xFFFFF8EB.toLong())) // fondo color piel
-    ){
+            .verticalScroll(rememberScrollState())
+            .background(Color(0xFFFFF8EB.toLong()))
+    ) {
+        // Encabezado con contador de publicaciones
         Text(
-            text = "Tenemos la cantidad de ${ControlPublicaciones.publicaciones.value.size} publicaciones",
+            text = "Tenemos la cantidad de ${publicaciones.size} publicaciones",
             color = Color.White, // texto blanco
             fontWeight = FontWeight.Bold,
             modifier = Modifier
                 .fillMaxWidth()
-                .background(color = Color(0xFF021F0A.toLong())) // fondo verde oscuro
+                .background(color = Color(0xFF175219.toLong())) // fondo verde oscuro
                 .padding(10.dp) // espacio interno
         )
-    }
+        Column(
+            modifier = modificador
+                .fillMaxSize()
+                .padding(10.dp) // espacio interno
+        ) {
 
-    if (ControlPublicaciones.publicaciones.value.size > 0){
-        Column (modifier = Modifier.verticalScroll(rememberScrollState())) {
-            for (publicacion in ControlPublicaciones.publicaciones.value){
-                Column (modifier = Modifier
-                    .clickable {
-                    ControlPublicaciones.seleccionarPublicacion(id = publicacion.id)
-                    navegarAPublicacion()
-                }
-                    .fillMaxSize()
-                ) {
-                    Spacer(modifier = Modifier.height(50.dp))
+            // Si aún no hay publicaciones, mostramos un indicador
+            if (publicaciones.isEmpty()) {
+                CircularProgressIndicator(
+                    color = Color(0xFF021F0A.toLong()),
+                    modifier = Modifier.padding(top = 20.dp)
+                )
+            } else {
+                // Lista de publicaciones
+                for (publicacion in publicaciones) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(16.dp) // margen externo entre tarjetas
+                            .padding(vertical = 6.dp)
                             .background(
-                                color = Color(0xFFA8FFBF.toLong()), // Verde claro
-                                shape = RoundedCornerShape(12.dp)
+                                color = Color(0xFFA8FFBF.toLong()),
+                                shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp)
                             )
-                            .padding(12.dp) // padding interno de la tarjeta
+                            .clickable {
+                                controlador.seleccionarPublicacion(publicacion.id)
+                                navegarAPublicacion(publicacion) // aquí navega pasando la publicación
+                            }
+                            .padding(12.dp)
                     ) {
                         Text(
-                            text = "Publicación: ${publicacion.title}",
-                            color = Color(0xFF021F0A.toLong()),
+                            text = publicacion.title,
                             fontWeight = FontWeight.Bold,
-                            fontSize = 22.sp,
-                            modifier = Modifier.padding(bottom = 4.dp)
+                            fontSize = 18.sp,
+                            color = Color(0xFF021F0A.toLong())
                         )
+                        Spacer(modifier = Modifier.height(4.dp))
                         Text(
-                            text = publicacion.body,
-                            color = Color.Black
+                            text = publicacion.body.take(100) + "...",
+                            fontSize = 14.sp,
+                            color = Color.DarkGray
                         )
                     }
-
-
                 }
-
             }
         }
     }
-    else {
-        Text("Disculpa las molestias, pero estamos obteniendo las ultimas publicaciones. Favores de esperar...")
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun Previsualizacion(){
-    ListaPublicaciones()
 }
